@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 Advanced Analysis - Crypto Volume Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://s3.tradingview.com/tv.js"></script>
+
+</head>
+
+<body>
+
+<header>
+  <div class="header-container">
+    <div class="logo">💰 Crypto Analysis</div>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="analysis.html" class="active">Analysis</a>
+      <a href="alerts.html">Alerts</a>
+      <a href="trading-tools.html">Trading Tools</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="sentiment.html">Sentiment</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<h1>📊 Advanced Crypto Analysis</h1>
+
+<div class="container">
+  
+  <div class="section">
+    <h3>📈 Market Overview</h3>
+    <div class="stats-panel">
+      <div class="stat-card">
+        <div class="stat-label">Total Market Cap</div>
+        <div class="stat-value" id="totalMarketCap">$0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">24h Volume</div>
+        <div class="stat-value" id="total24hVol">$0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Market Dominance</div>
+        <div class="stat-value" id="marketDom">0%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Coins</div>
+        <div class="stat-value" id="activeCoinCount">6</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>🔍 Detailed Analysis by Coin</h3>
+    <div id="analysisContainer"></div>
+  </div>
+
+  <div class="section">
+    <h3>📊 Indicator Comparison Chart</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+      <div>
+        <h4 style="text-align: center; color: #00ffaa;">RSI Values</h4>
+        <canvas id="rsiChart" width="300" height="200"></canvas>
+      </div>
+      <div>
+        <h4 style="text-align: center; color: #00ffaa;">MACD Values</h4>
+        <canvas id="macdChart" width="300" height="200"></canvas>
+      </div>
+      <div>
+        <h4 style="text-align: center; color: #00ffaa;">Volume Trend</h4>
+        <canvas id="volumeChart" width="300" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>🎯 Buy/Sell Pressure Analysis</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Coin</th>
+          <th>Buy Pressure %</th>
+          <th>Sell Pressure %</th>
+          <th>Momentum</th>
+          <th>Signal</th>
+        </tr>
+      </thead>
+      <tbody id="pressureTable">
+        <!-- Dynamically filled -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>⚠️ Price Predictions</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Coin</th>
+          <th>Current Price</th>
+          <th>Predicted Price</th>
+          <th>Trend</th>
+          <th>Confidence</th>
+        </tr>
+      </thead>
+      <tbody id="predictionTable">
+        <!-- Dynamically filled -->
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div id="lastUpdate" style="margin-top: 40px;"></div>
+
+<script src="java.sc.js"></script>
+<script src="analysis.js"></script>
+
+</body>
+</html>

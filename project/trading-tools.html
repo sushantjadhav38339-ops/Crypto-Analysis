@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎯 Trading Tools - Crypto Volume Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+  <div class="header-container">
+    <div class="logo">💰 Crypto Analysis AI</div>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="analysis.html">Analysis</a>
+      <a href="alerts.html">Alerts</a>
+      <a href="trading-tools.html" class="active">Trading Tools</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="sentiment.html">Sentiment</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<h1>🎯 Professional Trading Tools</h1>
+
+<div class="container">
+
+  <!-- ================= POSITION SIZING CALCULATOR ================= -->
+  <div class="section">
+    <h3>📊 Position Sizing Calculator</h3>
+    <p style="color: #aaa; font-size: 14px;">Calculate safe position size based on risk percentage and stop loss distance.</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
+      <div>
+        <label style="color: #00ffaa;">Account Balance ($)</label>
+        <input type="number" id="accountBalance" value="10000" min="0">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Risk % per Trade</label>
+        <input type="number" id="riskPercent" value="2" min="0" max="100" step="0.1">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Entry Price ($)</label>
+        <input type="number" id="entryPrice" value="100" min="0">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Stop Loss Price ($)</label>
+        <input type="number" id="stopLoss" value="95" min="0">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Take Profit Price ($)</label>
+        <input type="number" id="takeProfit" value="110" min="0">
+      </div>
+      <div style="display: flex; align-items: flex-end;">
+        <button onclick="calculatePosition()" style="width: 100%; margin: 0;">📈 Calculate</button>
+      </div>
+    </div>
+
+    <div id="positionResult" style="display: none; background: rgba(0, 255, 170, 0.1); padding: 20px; border-radius: 10px; border: 2px solid rgba(0, 255, 170, 0.3); margin: 20px 0;">
+      <h4 style="color: #00ffaa; margin-bottom: 15px;">Position Details</h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <div>
+          <p style="color: #aaa; margin: 5px 0;">Risk Amount</p>
+          <p style="color: #00ffaa; font-size: 20px; font-weight: bold;" id="riskAmount">$0</p>
+        </div>
+        <div>
+          <p style="color: #aaa; margin: 5px 0;">Position Size (Crypto)</p>
+          <p style="color: #00ffaa; font-size: 20px; font-weight: bold;" id="positionSize">0</p>
+        </div>
+        <div>
+          <p style="color: #aaa; margin: 5px 0;">Stop Loss Distance</p>
+          <p style="color: #ff4455; font-size: 20px; font-weight: bold;" id="slDistance">0%</p>
+        </div>
+        <div>
+          <p style="color: #aaa; margin: 5px 0;">Take Profit Distance</p>
+          <p style="color: #00ffaa; font-size: 20px; font-weight: bold;" id="tpDistance">0%</p>
+        </div>
+        <div>
+          <p style="color: #aaa; margin: 5px 0;">Risk/Reward Ratio</p>
+          <p style="color: #00ffff; font-size: 20px; font-weight: bold;" id="rrRatio">0:0</p>
+        </div>
+        <div>
+          <p style="color: #aaa; margin: 5px 0;">Potential Profit</p>
+          <p style="color: #00ffaa; font-size: 20px; font-weight: bold;" id="potentialProfit">$0</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SUPPORT & RESISTANCE ================= -->
+  <div class="section">
+    <h3>🎯 Support & Resistance Calculator</h3>
+    <p style="color: #aaa; font-size: 14px;">Calculate key support and resistance levels using Pivot Points method.</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+      <div>
+        <label style="color: #00ffaa;">High Price ($)</label>
+        <input type="number" id="highPrice" value="110" min="0">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Low Price ($)</label>
+        <input type="number" id="lowPrice" value="90" min="0">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Close Price ($)</label>
+        <input type="number" id="closePrice" value="105" min="0">
+      </div>
+      <div style="display: flex; align-items: flex-end;">
+        <button onclick="calculatePivot()" style="width: 100%; margin: 0;">🎯 Calculate Levels</button>
+      </div>
+    </div>
+
+    <div id="pivotResult" style="display: none; background: rgba(0, 255, 170, 0.1); padding: 20px; border-radius: 10px; border: 2px solid rgba(0, 255, 170, 0.3); margin: 20px 0;">
+      <h4 style="color: #00ffaa; margin-bottom: 15px;">Pivot Point Levels</h4>
+      <table style="width: 100%;">
+        <tbody>
+          <tr style="border-bottom: 1px solid rgba(0, 255, 170, 0.2);">
+            <td style="padding: 10px; color: #00ffaa; font-weight: bold;">Resistance 2</td>
+            <td style="padding: 10px; text-align: right; color: #ff4455; font-weight: bold;" id="r2">$0</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(0, 255, 170, 0.2);">
+            <td style="padding: 10px; color: #00ffaa; font-weight: bold;">Resistance 1</td>
+            <td style="padding: 10px; text-align: right; color: #ff4455; font-weight: bold;" id="r1">$0</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(0, 255, 170, 0.2); background: rgba(0, 255, 170, 0.05);">
+            <td style="padding: 10px; color: #00ffff; font-weight: bold;">Pivot Point</td>
+            <td style="padding: 10px; text-align: right; color: #00ffff; font-weight: bold;" id="pivot">$0</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(0, 255, 170, 0.2);">
+            <td style="padding: 10px; color: #00ffaa; font-weight: bold;">Support 1</td>
+            <td style="padding: 10px; text-align: right; color: #00ffaa; font-weight: bold;" id="s1">$0</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; color: #00ffaa; font-weight: bold;">Support 2</td>
+            <td style="padding: 10px; text-align: right; color: #00ffaa; font-weight: bold;" id="s2">$0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= FIBONACCI CALCULATOR ================= -->
+  <div class="section">
+    <h3>📈 Fibonacci Extension Levels</h3>
+    <p style="color: #aaa; font-size: 14px;">Calculate Fibonacci retracement and extension levels for trend analysis.</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+      <div>
+        <label style="color: #00ffaa;">Trend High ($)</label>
+        <input type="number" id="fibHigh" value="120" min="0">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Trend Low ($)</label>
+        <input type="number" id="fibLow" value="80" min="0">
+      </div>
+      <div style="display: flex; align-items: flex-end;">
+        <button onclick="calculateFibonacci()" style="width: 100%; margin: 0;">📊 Calculate Fibs</button>
+      </div>
+    </div>
+
+    <div id="fibResult" style="display: none; background: rgba(0, 255, 170, 0.1); padding: 20px; border-radius: 10px; border: 2px solid rgba(0, 255, 170, 0.3); margin: 20px 0;">
+      <h4 style="color: #00ffaa; margin-bottom: 15px;">Fibonacci Levels</h4>
+      <table style="width: 100%;">
+        <tbody>
+          <tr style="border-bottom: 1px solid rgba(0, 255, 170, 0.2);">
+            <td style="padding: 10px; color: #aaa;">0% (High)</td>
+            <td style="padding: 10px; text-align: right; color: #ff9900; font-weight: bold;" id="fib0">$0</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(0, 255, 170, 0.2);">
+            <td style="padding: 10px; color: #aaa;">23.6%</td>
+            <td style="padding: 10px; text-align: right; color: #ff9900; font-weight: bold;" id="fib236">$0</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(0, 255, 170, 0.2);">
+            <td style="padding: 10px; color: #aaa;">38.2%</td>
+            <td style="padding: 10px; text-align: right; color: #ff9900; font-weight: bold;" id="fib382">$0</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(0, 255, 170, 0.2);">
+            <td style="padding: 10px; color: #aaa;">50.0%</td>
+            <td style="padding: 10px; text-align: right; color: #ff9900; font-weight: bold;" id="fib50">$0</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(0, 255, 170, 0.2);">
+            <td style="padding: 10px; color: #aaa;">61.8%</td>
+            <td style="padding: 10px; text-align: right; color: #ff9900; font-weight: bold;" id="fib618">$0</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(0, 255, 170, 0.2);">
+            <td style="padding: 10px; color: #aaa;">100% (Low)</td>
+            <td style="padding: 10px; text-align: right; color: #00ffaa; font-weight: bold;" id="fib100">$0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= LEVERAGE CALCULATOR ================= -->
+  <div class="section">
+    <h3>⚡ Margin & Leverage Calculator</h3>
+    <p style="color: #aaa; font-size: 14px;">Calculate margin requirements and potential liquidation price for leveraged trades.</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+      <div>
+        <label style="color: #00ffaa;">Initial Margin ($)</label>
+        <input type="number" id="marginAmount" value="1000" min="0">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Leverage (x)</label>
+        <input type="number" id="leverage" value="5" min="1" max="125">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Entry Price ($)</label>
+        <input type="number" id="margEntryPrice" value="100" min="0">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Maintenance Margin (%)</label>
+        <input type="number" id="maintenance" value="5" min="0" max="50">
+      </div>
+      <div style="display: flex; align-items: flex-end;">
+        <button onclick="calculateLeverage()" style="width: 100%; margin: 0;">⚡ Calculate Liq</button>
+      </div>
+    </div>
+
+    <div id="leverageResult" style="display: none; background: rgba(0, 255, 170, 0.1); padding: 20px; border-radius: 10px; border: 2px solid rgba(0, 255, 170, 0.3); margin: 20px 0;">
+      <h4 style="color: #00ffaa; margin-bottom: 15px;">Leverage Details</h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <div>
+          <p style="color: #aaa; margin: 5px 0;">Total Position Value</p>
+          <p style="color: #00ffaa; font-size: 18px; font-weight: bold;" id="totalPosValue">$0</p>
+        </div>
+        <div>
+          <p style="color: #aaa; margin: 5px 0;">Borrowed Amount</p>
+          <p style="color: #ff4455; font-size: 18px; font-weight: bold;" id="borrowedAmount">$0</p>
+        </div>
+        <div>
+          <p style="color: #aaa; margin: 5px 0;">Liquidation Price</p>
+          <p style="color: #ff4455; font-size: 18px; font-weight: bold;" id="liquidationPrice">$0</p>
+        </div>
+        <div>
+          <p style="color: #aaa; margin: 5px 0;">Distance to Liquidation</p>
+          <p style="color: #ff9900; font-size: 18px; font-weight: bold;" id="distToLiq">0%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TRADE JOURNAL ================= -->
+  <div class="section">
+    <h3>📔 Trade Journal</h3>
+    <p style="color: #aaa; font-size: 14px;">Keep track of your trades for analysis and improvement.</p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+      <div>
+        <label style="color: #00ffaa;">Coin Traded</label>
+        <input type="text" id="tradeCoin" placeholder="BTC, ETH, etc">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Trade Type</label>
+        <select id="tradeType">
+          <option>Long</option>
+          <option>Short</option>
+        </select>
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Entry Price ($)</label>
+        <input type="number" id="journalEntry" value="0" min="0">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Exit Price ($)</label>
+        <input type="number" id="journalExit" value="0" min="0">
+      </div>
+      <div>
+        <label style="color: #00ffaa;">Position Size</label>
+        <input type="number" id="journalSize" value="0" min="0" step="0.001">
+      </div>
+      <div style="display: flex; align-items: flex-end;">
+        <button onclick="addTradeToJournal()" style="width: 100%; margin: 0;">📝 Add Trade</button>
+      </div>
+    </div>
+
+    <div id="tradeJournal" style="margin-top: 20px;">
+      <table style="width: 100%;">
+        <thead>
+          <tr style="border-bottom: 2px solid rgba(0, 255, 170, 0.4);">
+            <th style="padding: 10px; text-align: left; color: #00ffaa;">Time</th>
+            <th style="padding: 10px; text-align: left; color: #00ffaa;">Coin</th>
+            <th style="padding: 10px; text-align: left; color: #00ffaa;">Type</th>
+            <th style="padding: 10px; text-align: left; color: #00ffaa;">Entry</th>
+            <th style="padding: 10px; text-align: left; color: #00ffaa;">Exit</th>
+            <th style="padding: 10px; text-align: left; color: #00ffaa;">P&L</th>
+            <th style="padding: 10px; text-align: left; color: #00ffaa;">%</th>
+          </tr>
+        </thead>
+        <tbody id="journalBody">
+          <tr>
+            <td colspan="7" style="padding: 20px; text-align: center; color: #999;">No trades recorded yet</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="journalStats" style="display: none; margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+      <div class="stat-card">
+        <div class="stat-label">Total Trades</div>
+        <div class="stat-value" id="totalTrades">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Win Rate</div>
+        <div class="stat-value" id="winRate">0%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total P&L</div>
+        <div class="stat-value" id="totalPL">$0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg Win</div>
+        <div class="stat-value" id="avgWin">$0</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="lastUpdate"></div>
+
+<script>
+// ================= POSITION SIZING ================= 
+function calculatePosition() {
+  const balance = parseFloat(document.getElementById('accountBalance').value);
+  const risk = parseFloat(document.getElementById('riskPercent').value);
+  const entry = parseFloat(document.getElementById('entryPrice').value);
+  const stop = parseFloat(document.getElementById('stopLoss').value);
+  const tp = parseFloat(document.getElementById('takeProfit').value);
+
+  const riskAmount = balance * (risk / 100);
+  const stopDist = Math.abs(entry - stop);
+  const posSize = riskAmount / stopDist;
+  const slDist = ((entry - stop) / entry * 100).toFixed(2);
+  const tpDist = ((tp - entry) / entry * 100).toFixed(2);
+  const rrRatio = (Math.abs(tp - entry) / Math.abs(entry - stop)).toFixed(2);
+  const potentialProfit = posSize * Math.abs(tp - entry);
+
+  document.getElementById('riskAmount').textContent = '$' + riskAmount.toFixed(2);
+  document.getElementById('positionSize').textContent = posSize.toFixed(4);
+  document.getElementById('slDistance').textContent = slDist + '%';
+  document.getElementById('tpDistance').textContent = tpDist + '%';
+  document.getElementById('rrRatio').textContent = '1:' + rrRatio;
+  document.getElementById('potentialProfit').textContent = '$' + potentialProfit.toFixed(2);
+  document.getElementById('positionResult').style.display = 'block';
+}
+
+// ================= PIVOT POINTS =================
+function calculatePivot() {
+  const high = parseFloat(document.getElementById('highPrice').value);
+  const low = parseFloat(document.getElementById('lowPrice').value);
+  const close = parseFloat(document.getElementById('closePrice').value);
+
+  const pp = (high + low + close) / 3;
+  const r1 = (2 * pp) - low;
+  const r2 = pp + (high - low);
+  const s1 = (2 * pp) - high;
+  const s2 = pp - (high - low);
+
+  document.getElementById('r2').textContent = '$' + r2.toFixed(2);
+  document.getElementById('r1').textContent = '$' + r1.toFixed(2);
+  document.getElementById('pivot').textContent = '$' + pp.toFixed(2);
+  document.getElementById('s1').textContent = '$' + s1.toFixed(2);
+  document.getElementById('s2').textContent = '$' + s2.toFixed(2);
+  document.getElementById('pivotResult').style.display = 'block';
+}
+
+// ================= FIBONACCI =================
+function calculateFibonacci() {
+  const high = parseFloat(document.getElementById('fibHigh').value);
+  const low = parseFloat(document.getElementById('fibLow').value);
+  const diff = high - low;
+
+  document.getElementById('fib0').textContent = '$' + high.toFixed(2);
+  document.getElementById('fib236').textContent = '$' + (high - (diff * 0.236)).toFixed(2);
+  document.getElementById('fib382').textContent = '$' + (high - (diff * 0.382)).toFixed(2);
+  document.getElementById('fib50').textContent = '$' + (high - (diff * 0.5)).toFixed(2);
+  document.getElementById('fib618').textContent = '$' + (high - (diff * 0.618)).toFixed(2);
+  document.getElementById('fib100').textContent = '$' + low.toFixed(2);
+  document.getElementById('fibResult').style.display = 'block';
+}
+
+// ================= LEVERAGE =================
+function calculateLeverage() {
+  const margin = parseFloat(document.getElementById('marginAmount').value);
+  const lev = parseFloat(document.getElementById('leverage').value);
+  const entry = parseFloat(document.getElementById('margEntryPrice').value);
+  const maint = parseFloat(document.getElementById('maintenance').value);
+
+  const totalPos = margin * lev;
+  const borrowed = totalPos - margin;
+  const liqPrice = entry * (1 - ((margin / totalPos) * (1 - (maint / 100))));
+  const distToLiq = (((entry - liqPrice) / entry) * 100).toFixed(2);
+
+  document.getElementById('totalPosValue').textContent = '$' + totalPos.toFixed(2);
+  document.getElementById('borrowedAmount').textContent = '$' + borrowed.toFixed(2);
+  document.getElementById('liquidationPrice').textContent = '$' + liqPrice.toFixed(2);
+  document.getElementById('distToLiq').textContent = distToLiq + '%';
+  document.getElementById('leverageResult').style.display = 'block';
+}
+
+// ================= TRADE JOURNAL =================
+let trades = JSON.parse(localStorage.getItem('tradesTourn')) || [];
+
+function addTradeToJournal() {
+  const coin = document.getElementById('tradeCoin').value;
+  const type = document.getElementById('tradeType').value;
+  const entry = parseFloat(document.getElementById('journalEntry').value);
+  const exit = parseFloat(document.getElementById('journalExit').value);
+  const size = parseFloat(document.getElementById('journalSize').value);
+
+  if (!coin || !entry || !exit || !size) {
+    alert('⚠️ Please fill all fields');
+    return;
+  }
+
+  const pnl = (type === 'Long' ? exit - entry : entry - exit) * size;
+  const pnlPercent = ((pnl / (entry * size)) * 100).toFixed(2);
+
+  const trade = {
+    time: new Date().toLocaleString(),
+    coin,
+    type,
+    entry,
+    exit,
+    pnl,
+    percent: pnlPercent
+  };
+
+  trades.push(trade);
+  localStorage.setItem('tradesTourn', JSON.stringify(trades));
+  updateTradeJournal();
+
+  document.getElementById('tradeCoin').value = '';
+  document.getElementById('journalEntry').value = '';
+  document.getElementById('journalExit').value = '';
+  document.getElementById('journalSize').value = '';
+}
+
+function updateTradeJournal() {
+  const tbody = document.getElementById('journalBody');
+  tbody.innerHTML = '';
+
+  if (trades.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="padding: 20px; text-align: center; color: #999;">No trades recorded yet</td></tr>';
+    document.getElementById('journalStats').style.display = 'none';
+    return;
+  }
+
+  let wins = 0, totalPL = 0, totalWins = 0;
+
+  trades.forEach(trade => {
+    const pnlColor = trade.pnl >= 0 ? '#00ffaa' : '#ff4455';
+    const row = tbody.insertRow();
+    row.innerHTML = `
+      <td style="padding: 10px; color: #aaa; font-size: 12px;">${trade.time}</td>
+      <td style="padding: 10px; color: #00ffaa; font-weight: bold;">${trade.coin}</td>
+      <td style="padding: 10px; color: ${trade.type === 'Long' ? '#00ffaa' : '#ff4455'};">${trade.type}</td>
+      <td style="padding: 10px; color: #ccc;">$${trade.entry.toFixed(2)}</td>
+      <td style="padding: 10px; color: #ccc;">$${trade.exit.toFixed(2)}</td>
+      <td style="padding: 10px; color: ${pnlColor}; font-weight: bold;">$${trade.pnl.toFixed(2)}</td>
+      <td style="padding: 10px; color: ${pnlColor}; font-weight: bold;">${trade.percent}%</td>
+    `;
+
+    if (trade.pnl > 0) wins++;
+    totalPL += trade.pnl;
+    if (trade.pnl > 0) totalWins += trade.pnl;
+  });
+
+  const winRate = ((wins / trades.length) * 100).toFixed(1);
+  const avgWin = wins > 0 ? (totalWins / wins).toFixed(2) : 0;
+
+  document.getElementById('totalTrades').textContent = trades.length;
+  document.getElementById('winRate').textContent = winRate + '%';
+  document.getElementById('totalPL').textContent = '$' + totalPL.toFixed(2);
+  document.getElementById('avgWin').textContent = '$' + avgWin;
+  document.getElementById('journalStats').style.display = 'grid';
+}
+
+window.addEventListener('load', updateTradeJournal);
+</script>
+
+<script src="java.sc.js"></script>
+
+</body>
+</html>

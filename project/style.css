@@ -1,0 +1,573 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0b0b13 0%, #1a1a2e 100%);
+  color: white;
+  padding: 0;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 255, 170, 0.3), inset 0 0 10px rgba(0, 255, 170, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 255, 170, 0.6), inset 0 0 20px rgba(0, 255, 170, 0.2);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ================= HEADER & NAVIGATION ================= */
+header {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid rgba(0, 255, 170, 0.3);
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 8px 32px rgba(0, 255, 170, 0.1);
+}
+
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #00ffaa;
+  text-shadow: 0 0 15px #00ffaa;
+  animation: glow 2s ease-in-out infinite;
+  cursor: pointer;
+}
+
+nav a {
+  color: #00ffaa;
+  text-decoration: none;
+  margin: 0 15px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+nav a:hover {
+  background: rgba(0, 255, 170, 0.2);
+  box-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
+  transform: translateY(-2px);
+}
+
+nav a.active {
+  background: rgba(0, 255, 170, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 170, 0.6);
+}
+
+/* ================= HEADING STYLES ================= */
+h1 {
+  text-align: center;
+  color: #00ffaa;
+  text-shadow: 0 0 20px #00ffaa, 0 0 40px rgba(0, 255, 170, 0.5);
+  font-size: 48px;
+  margin: 30px 0;
+  animation: slideInLeft 0.8s ease;
+  letter-spacing: 2px;
+}
+
+h2 {
+  color: #00ffaa;
+  text-shadow: 0 0 10px #00ffaa;
+  margin: 15px 0 10px 0;
+  animation: fadeIn 0.6s ease;
+}
+
+h3 {
+  color: #00ffff;
+  margin: 20px 0 10px 0;
+  font-size: 18px;
+}
+
+/* ================= BUTTON STYLES ================= */
+button, .btn {
+  padding: 12px 25px;
+  border-radius: 25px;
+  border: 2px solid #00ffaa;
+  background: rgba(0, 255, 170, 0.1);
+  color: #00ffaa;
+  cursor: pointer;
+  margin: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px #00ffaa;
+  box-shadow: 0 0 10px rgba(0, 255, 170, 0.3);
+}
+
+button:hover, .btn:hover {
+  background: rgba(0, 255, 170, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 170, 0.6);
+  transform: translateY(-3px);
+}
+
+button:active {
+  transform: translateY(-1px);
+  box-shadow: inset 0 0 10px rgba(0, 255, 170, 0.4);
+}
+
+/* ================= CONTROL PANEL ================= */
+.control-panel {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  margin: 20px auto;
+  max-width: 1300px;
+  animation: fadeIn 0.8s ease;
+}
+
+/* ================= DASHBOARD ================= */
+#dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.coin {
+  padding: 25px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(0, 255, 170, 0.05) 0%, rgba(0, 255, 255, 0.05) 100%);
+  border: 2px solid rgba(0, 255, 170, 0.3);
+  box-shadow: 0 0 15px rgba(0, 255, 170, 0.2);
+  transition: all 0.3s ease;
+  animation: fadeIn 0.6s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.coin::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.coin:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0, 255, 170, 0.4);
+  border-color: rgba(0, 255, 170, 0.6);
+  background: linear-gradient(135deg, rgba(0, 255, 170, 0.1) 0%, rgba(0, 255, 255, 0.1) 100%);
+}
+
+.coin:hover::before {
+  left: 100%;
+}
+
+/* ================= METRICS ================= */
+.metric {
+  margin: 12px 0;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border-left: 3px solid #00ffaa;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metric:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-left-color: #00ffff;
+  padding-left: 15px;
+}
+
+.metric span {
+  font-weight: bold;
+  color: #00ffaa;
+  animation: fadeIn 0.4s ease;
+}
+
+.buy {
+  color: #00ffaa;
+  font-weight: bold;
+  text-shadow: 0 0 10px #00ffaa;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.sell {
+  color: #ff4455;
+  font-weight: bold;
+  text-shadow: 0 0 10px #ff4455;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+/* ================= ALERT SPIKE ================= */
+.alertSpike {
+  background: linear-gradient(135deg, #ff4455 0%, #ff6677 100%);
+  padding: 8px 12px;
+  border-radius: 10px;
+  display: none;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 0 15px rgba(255, 68, 85, 0.6);
+  animation: bounce 0.5s ease;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.alertSpike.show {
+  display: inline-block;
+}
+
+/* ================= CANVAS CHART ================= */
+canvas {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 255, 170, 0.2);
+  margin: 15px 0;
+  transition: all 0.3s ease;
+  width: 100%;
+  height: auto;
+}
+
+canvas:hover {
+  border-color: rgba(0, 255, 170, 0.6);
+  box-shadow: 0 0 15px rgba(0, 255, 170, 0.3);
+}
+
+/* ================= TRADINGVIEW ================= */
+#dashboard > div > div[id^="tv-"] {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 255, 170, 0.2);
+  margin-top: 15px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* ================= LAST UPDATE ================= */
+#lastUpdate {
+  text-align: center;
+  margin: 30px;
+  color: #00ffaa;
+  font-weight: bold;
+  font-size: 14px;
+  text-shadow: 0 0 10px #00ffaa;
+  animation: fadeIn 0.5s ease;
+}
+
+/* ================= LIGHT MODE ================= */
+body.light {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8f0 100%);
+  color: #333;
+}
+
+body.light h1,
+body.light .logo {
+  color: #00bb77;
+  text-shadow: 0 0 10px rgba(0, 170, 119, 0.3);
+}
+
+body.light .coin {
+  background: linear-gradient(135deg, rgba(0, 170, 119, 0.08) 0%, rgba(0, 150, 200, 0.08) 100%);
+  border-color: rgba(0, 170, 119, 0.4);
+  color: #333;
+}
+
+body.light .metric {
+  background: rgba(200, 200, 200, 0.3);
+  border-left-color: #00aa77;
+}
+
+body.light button {
+  border-color: #00aa77;
+  background: rgba(0, 170, 119, 0.1);
+  color: #00aa77;
+}
+
+body.light .buy {
+  color: #00aa77;
+}
+
+body.light .sell {
+  color: #cc3344;
+}
+
+/* ================= STATS PANEL ================= */
+.stats-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1400px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, rgba(0, 255, 170, 0.1) 0%, rgba(0, 255, 255, 0.1) 100%);
+  border: 2px solid rgba(0, 255, 170, 0.3);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  animation: fadeIn 0.8s ease;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 255, 170, 0.3);
+  border-color: rgba(0, 255, 170, 0.6);
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: #00ffaa;
+  text-shadow: 0 0 10px #00ffaa;
+  margin: 10px 0;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ================= CONTAINER & SECTIONS ================= */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.section {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 255, 170, 0.2);
+  border-radius: 15px;
+  padding: 30px;
+  margin: 20px 0;
+  animation: fadeIn 0.8s ease;
+}
+
+/* ================= FORM ELEMENTS ================= */
+input[type="text"],
+input[type="number"],
+select {
+  padding: 12px 15px;
+  border: 2px solid rgba(0, 255, 170, 0.3);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #00ffaa;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  margin: 10px 0;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  outline: none;
+  border-color: rgba(0, 255, 170, 0.8);
+  box-shadow: 0 0 15px rgba(0, 255, 170, 0.4);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* ================= TABLE STYLES ================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th {
+  background: rgba(0, 255, 170, 0.2);
+  color: #00ffaa;
+  padding: 15px;
+  text-align: left;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 2px solid rgba(0, 255, 170, 0.4);
+}
+
+td {
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(0, 255, 170, 0.1);
+}
+
+tr:hover {
+  background: rgba(0, 255, 170, 0.05);
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+@media (max-width: 1200px) {
+  h1 {
+    font-size: 36px;
+  }
+
+  #dashboard {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 28px;
+  }
+
+  #dashboard {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .header-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  nav a {
+    margin: 5px;
+    font-size: 12px;
+  }
+
+  .stats-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .coin {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin: 15px 0;
+  }
+
+  button, .btn {
+    padding: 10px 15px;
+    font-size: 12px;
+    margin: 5px;
+  }
+
+  .metric {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+}
+
+/* ================= SCROLLBAR STYLING ================= */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 170, 0.5);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 170, 0.8);
+}
+
+/* ================= UTILITY CLASSES ================= */
+.text-center {
+  text-align: center;
+}
+
+.text-glow {
+  text-shadow: 0 0 10px #00ffaa;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: block !important;
+}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔔 Alerts - Crypto Volume Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+  <div class="header-container">
+    <div class="logo">💰 Crypto Analysis</div>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="analysis.html">Analysis</a>
+      <a href="alerts.html" class="active">Alerts</a>
+      <a href="trading-tools.html">Trading Tools</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="sentiment.html">Sentiment</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<h1>🔔 Real-Time Alerts & Notifications</h1>
+
+<div class="container">
+  
+  <div class="section">
+    <h3>⚙️ Alert Settings</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+      <div>
+        <label>Price Change Alert (%)</label>
+        <input type="number" id="priceChangeThreshold" value="5" min="0" max="100">
+        <small>Alert when price changes by this percentage</small>
+      </div>
+      <div>
+        <label>Volume Spike Alert (%)</label>
+        <input type="number" id="volumeSpikeThreshold" value="50" min="0" max="500">
+        <small>Alert when volume spikes by this percentage</small>
+      </div>
+      <div>
+        <label>RSI Alert Threshold</label>
+        <input type="number" id="rsiThreshold" value="70" min="0" max="100">
+        <small>Alert when RSI exceeds this value</small>
+      </div>
+      <div>
+        <label>Check Interval (seconds)</label>
+        <input type="number" id="checkInterval" value="5" min="1" max="60">
+        <small>How often to check for alerts</small>
+      </div>
+    </div>
+    <button onclick="saveAlertSettings()" style="margin-top: 20px;">💾 Save Settings</button>
+  </div>
+
+  <div class="section">
+    <h3>📢 Active Alerts Log</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Coin</th>
+          <th>Alert Type</th>
+          <th>Details</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="alertsLog">
+        <tr>
+          <td colspan="5" style="text-align: center; color: #999;">No alerts yet. Waiting for market events...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>🚀 Hot Signals</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Coin</th>
+          <th>Signal Strength</th>
+          <th>Type</th>
+          <th>Triggered at</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="hotSignals">
+        <tr>
+          <td colspan="5" style="text-align: center; color: #999;">Analyzing market conditions...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>📊 Alert Statistics</h3>
+    <div class="stats-panel">
+      <div class="stat-card">
+        <div class="stat-label">Total Alerts</div>
+        <div class="stat-value" id="totalAlerts">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Price Alerts</div>
+        <div class="stat-value" id="priceAlerts">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Volume Alerts</div>
+        <div class="stat-value" id="volumeAlerts">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Technical Alerts</div>
+        <div class="stat-value" id="technicalAlerts">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>🔔 Notification Preferences</h3>
+    <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+        <input type="checkbox" id="soundNotif" checked>
+        <span>🔊 Sound Notifications</span>
+      </label>
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+        <input type="checkbox" id="browserNotif" checked>
+        <span>📱 Browser Notifications</span>
+      </label>
+      <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+        <input type="checkbox" id="desktopNotif" checked>
+        <span>🖥️ Desktop Alerts</span>
+      </label>
+    </div>
+    <button onclick="testNotification()" style="margin-top: 20px;">🔔 Test Notification</button>
+  </div>
+
+</div>
+
+<div id="lastUpdate"></div>
+
+<script>
+  // Alert system functions
+  let alertStats = {
+    total: 0,
+    price: 0,
+    volume: 0,
+    technical: 0
+  };
+
+  function saveAlertSettings() {
+    const settings = {
+      priceChangeThreshold: document.getElementById('priceChangeThreshold').value,
+      volumeSpikeThreshold: document.getElementById('volumeSpikeThreshold').value,
+      rsiThreshold: document.getElementById('rsiThreshold').value,
+      checkInterval: document.getElementById('checkInterval').value
+    };
+    localStorage.setItem('alertSettings', JSON.stringify(settings));
+    alert('✅ Alert settings saved successfully!');
+  }
+
+  function testNotification() {
+    alert('🔔 Test notification! Your alert system is working fine.');
+    if (document.getElementById('soundNotif').checked) {
+      // Play sound would go here
+      console.log('Sound notification triggered');
+    }
+  }
+
+  function addAlert(coin, type, details) {
+    alertStats.total++;
+    if (type === 'price') alertStats.price++;
+    if (type === 'volume') alertStats.volume++;
+    if (type === 'technical') alertStats.technical++;
+
+    document.getElementById('totalAlerts').textContent = alertStats.total;
+    document.getElementById('priceAlerts').textContent = alertStats.price;
+    document.getElementById('volumeAlerts').textContent = alertStats.volume;
+    document.getElementById('technicalAlerts').textContent = alertStats.technical;
+
+    const tbody = document.getElementById('alertsLog');
+    const row = tbody.insertRow(0);
+    row.innerHTML = `
+      <td>${new Date().toLocaleTimeString()}</td>
+      <td><strong>${coin}</strong></td>
+      <td>${type.toUpperCase()}</td>
+      <td>${details}</td>
+      <td><span class="buy">✓ Active</span></td>
+    `;
+  }
+
+  // Initialize with some sample data
+  window.addEventListener('load', () => {
+    const savedSettings = localStorage.getItem('alertSettings');
+    if (savedSettings) {
+      const settings = JSON.parse(savedSettings);
+      document.getElementById('priceChangeThreshold').value = settings.priceChangeThreshold;
+      document.getElementById('volumeSpikeThreshold').value = settings.volumeSpikeThreshold;
+      document.getElementById('rsiThreshold').value = settings.rsiThreshold;
+      document.getElementById('checkInterval').value = settings.checkInterval;
+    }
+  });
+</script>
+
+<script src="java.sc.js"></script>
+
+</body>
+</html>

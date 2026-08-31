@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💼 Portfolio Tracker - Crypto Volume Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    header>
+    <div class="header-container">
+        <div class="logo">💰 Crypto Analysis</div>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="analysis.html">Analysis</a>
+            <a href="alerts.html">Alerts</a>
+            <a href="trading-tools.html">Trading Tools</a>
+            <a href="portfolio.html" class="active">Portfolio</a>
+            <a href="sentiment.html">Sentiment</a>
+            <a href="about.html">About</a>
+        </nav>
+    </div>
+    </header>
+
+    <h1>💼 Portfolio Tracker & Performance</h1>
+
+    <div class="container">
+
+        <!-- ================= PORTFOLIO SUMMARY ================= -->
+        <div class="section">
+            <h3>📊 Portfolio Summary</h3>
+            <div class="stats-panel">
+                <div class="stat-card">
+                    <div class="stat-label">Total Value</div>
+                    <div class="stat-value" id="totalValue">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Invested</div>
+                    <div class="stat-value" id="totalInvested">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total P&L</div>
+                    <div class="stat-value" id="totalPL">$0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">ROI %</div>
+                    <div class="stat-value" id="roiPercent">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Win Rate</div>
+                    <div class="stat-value" id="winRate">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Biggest Win</div>
+                    <div class="stat-value" id="biggestWin">$0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= ADD HOLDING ================= -->
+        <div class="section">
+            <h3>➕ Add New Holding</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+                <div>
+                    <label style="color: #00ffaa;">Coin Name</label>
+                    <input type="text" id="coinName" placeholder="BTC, ETH, SOL...">
+                </div>
+                <div>
+                    <label style="color: #00ffaa;">Amount Held</label>
+                    <input type="number" id="coinAmount" value="0" step="0.00001">
+                </div>
+                <div>
+                    <label style="color: #00ffaa;">Purchase Price ($)</label>
+                    <input type="number" id="purchasePrice" value="0" step="0.01">
+                </div>
+                <div>
+                    <label style="color: #00ffaa;">Current Price ($)</label>
+                    <input type="number" id="currentPrice" value="0" step="0.01">
+                </div>
+                <div>
+                    <label style="color: #00ffaa;">Purchase Date</label>
+                    <input type="date" id="purchaseDate">
+                </div>
+                <div style="display: flex; align-items: flex-end;">
+                    <button onclick="addHolding()" style="width: 100%; margin: 0;">➕ Add Holding</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= HOLDINGS TABLE ================= -->
+        <div class="section">
+            <h3>📈 Your Holdings</h3>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Coin</th>
+                            <th>Amount</th>
+                            <th>Purchase Price</th>
+                            <th>Current Price</th>
+                            <th>Total Invested</th>
+                            <th>Current Value</th>
+                            <th>P&L</th>
+                            <th>P&L %</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="holdingsBody">
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 20px; color: #999;">No holdings yet. Add your first holding above!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ================= PORTFOLIO ALLOCATION ================= -->
+        <div class="section">
+            <h3>🥧 Portfolio Allocation</h3>
+            <canvas id="allocationChart" width="400" height="300" style="max-width: 100%; margin: 20px 0;"></canvas>
+            <div id="allocationLegend" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px;"></div>
+        </div>
+
+        <!-- ================= PERFORMANCE ANALYSIS ================= -->
+        <div class="section">
+            <h3>📊 Performance Analysis</h3>
+            <div class="stats-panel">
+                <div class="stat-card">
+                    <div class="stat-label">Best Performer</div>
+                    <div class="stat-value" id="bestPerformer">-</div>
+                    <p style="text-align: center; color: #00ffaa; margin-top: 10px;" id="bestPerfReturn">0%</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Worst Performer</div>
+                    <div class="stat-value" id="worstPerformer">-</div>
+                    <p style="text-align: center; color: #ff4455; margin-top: 10px;" id="worstPerfReturn">0%</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Average Return</div>
+                    <div class="stat-value" id="avgReturn">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Volatility</div>
+                    <div class="stat-value" id="volatility">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PRICE ALERTS ================= -->
+        <div class="section">
+            <h3>🔔 Holding Price Alerts</h3>
+            <p style="color: #aaa; font-size: 14px;">Set alerts for your holdings to be notified when prices reach target levels.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+                <div>
+                    <label style="color: #00ffaa;">Select Holding</label>
+                    <select id="alertCoin">
+          <option>Select a coin</option>
+        </select>
+                </div>
+                <div>
+                    <label style="color: #00ffaa;">Target Price ($)</label>
+                    <input type="number" id="alertPrice" value="0" step="0.01">
+                </div>
+                <div>
+                    <label style="color: #00ffaa;">Alert Type</label>
+                    <select id="alertType">
+          <option>Price Above</option>
+          <option>Price Below</option>
+        </select>
+                </div>
+                <div style="display: flex; align-items: flex-end;">
+                    <button onclick="addPriceAlert()" style="width: 100%; margin: 0;">🔔 Set Alert</button>
+                </div>
+            </div>
+
+            <table id="alertsTable" style="display: none; width: 100%; margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>Coin</th>
+                        <th>Type</th>
+                        <th>Target Price</th>
+                        <th>Current Price</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="alertsBody"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div id="lastUpdate"></div>
+
+    <script>
+        // ================= PORTFOLIO MANAGEMENT =================
+        let holdings = JSON.parse(localStorage.getItem('holdings')) || [];
+        let alerts = JSON.parse(localStorage.getItem('holdingAlerts')) || [];
+
+        function addHolding() {
+            const coin = document.getElementById('coinName').value;
+            const amount = parseFloat(document.getElementById('coinAmount').value);
+            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value);
+            const currentPrice = parseFloat(document.getElementById('currentPrice').value);
+            const date = document.getElementById('purchaseDate').value;
+
+            if (!coin || !amount || !purchasePrice || !currentPrice) {
+                alert('⚠️ Please fill all required fields');
+                return;
+            }
+
+            const holding = {
+                id: Date.now(),
+                coin: coin.toUpperCase(),
+                amount,
+                purchasePrice,
+                currentPrice,
+                date: date || new Date().toISOString().split('T')[0]
+            };
+
+            holdings.push(holding);
+            localStorage.setItem('holdings', JSON.stringify(holdings));
+            updatePortfolio();
+
+            document.getElementById('coinName').value = '';
+            document.getElementById('coinAmount').value = '';
+            document.getElementById('purchasePrice').value = '';
+            document.getElementById('currentPrice').value = '';
+            document.getElementById('purchaseDate').value = '';
+        }
+
+        function removeHolding(id) {
+            holdings = holdings.filter(h => h.id !== id);
+            localStorage.setItem('holdings', JSON.stringify(holdings));
+            updatePortfolio();
+        }
+
+        function updatePortfolio() {
+            const tbody = document.getElementById('holdingsBody');
+            tbody.innerHTML = '';
+
+            if (holdings.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 20px; color: #999;">No holdings yet. Add your first holding above!</td></tr>';
+                updateSummary();
+                return;
+            }
+
+            let totalInvested = 0,
+                totalValue = 0,
+                totalPL = 0;
+
+            holdings.forEach(holding => {
+                const invested = holding.amount * holding.purchasePrice;
+                const value = holding.amount * holding.currentPrice;
+                const pl = value - invested;
+                const plPercent = ((pl / invested) * 100).toFixed(2);
+                const plColor = pl >= 0 ? '#00ffaa' : '#ff4455';
+
+                totalInvested += invested;
+                totalValue += value;
+                totalPL += pl;
+
+                const row = tbody.insertRow();
+                row.innerHTML = `
+      <td style="padding: 10px; color: #00ffaa; font-weight: bold;">${holding.coin}</td>
+      <td style="padding: 10px; color: #ccc;">${holding.amount.toFixed(5)}</td>
+      <td style="padding: 10px; color: #aaa;">$${holding.purchasePrice.toFixed(2)}</td>
+      <td style="padding: 10px; color: #aaa;">$${holding.currentPrice.toFixed(2)}</td>
+      <td style="padding: 10px; color: #ccc;">$${invested.toFixed(2)}</td>
+      <td style="padding: 10px; color: #ccc;">$${value.toFixed(2)}</td>
+      <td style="padding: 10px; color: ${plColor}; font-weight: bold;">$${pl.toFixed(2)}</td>
+      <td style="padding: 10px; color: ${plColor}; font-weight: bold;">${plPercent}%</td>
+      <td style="padding: 10px;"><button onclick="removeHolding(${holding.id})" style="padding: 5px 10px; background: rgba(255, 68, 85, 0.2); color: #ff4455; border: 1px solid #ff4455;">🗑️</button></td>
+    `;
+            });
+
+            document.getElementById('totalInvested').textContent = '$' + totalInvested.toFixed(2);
+            document.getElementById('totalValue').textContent = '$' + totalValue.toFixed(2);
+            document.getElementById('totalPL').textContent = '$' + totalPL.toFixed(2);
+
+            const roi = totalInvested > 0 ? ((totalPL / totalInvested) * 100).toFixed(2) : 0;
+            document.getElementById('roiPercent').textContent = roi + '%';
+
+            updateAllocationChart();
+            updatePerformanceStats();
+            updateAlertCoinList();
+        }
+
+        function updateSummary() {
+            document.getElementById('totalValue').textContent = '$0';
+            document.getElementById('totalInvested').textContent = '$0';
+            document.getElementById('totalPL').textContent = '$0';
+            document.getElementById('roiPercent').textContent = '0%';
+            document.getElementById('winRate').textContent = '0%';
+            document.getElementById('biggestWin').textContent = '$0';
+        }
+
+        function updateAllocationChart() {
+            const canvas = document.getElementById('allocationChart');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = Math.min(width, height) / 3;
+
+            ctx.clearRect(0, 0, width, height);
+
+            const totalValue = holdings.reduce((sum, h) => sum + (h.amount * h.currentPrice), 0);
+            const colors = ['#00ffaa', '#ff4455', '#00ffff', '#ff9900', '#00ff99', '#ff00ff'];
+            const legend = document.getElementById('allocationLegend');
+            legend.innerHTML = '';
+
+            let currentAngle = -Math.PI / 2;
+
+            holdings.forEach((holding, index) => {
+                const value = holding.amount * holding.currentPrice;
+                const sliceAngle = (value / totalValue) * 2 * Math.PI;
+                const color = colors[index % colors.length];
+
+                // Draw slice
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                ctx.lineTo(centerX, centerY);
+                ctx.fill();
+
+                // Add legend
+                const legItem = document.createElement('div');
+                legItem.style.cssText = 'padding: 8px; border-radius: 8px; background: rgba(0, 0, 0, 0.3); border-left: 3px solid ' + color;
+                legItem.innerHTML = `<strong style="color: ${color}">${holding.coin}</strong><br><small>${((value / totalValue) * 100).toFixed(1)}% - $${value.toFixed(2)}</small>`;
+                legend.appendChild(legItem);
+
+                currentAngle += sliceAngle;
+            });
+        }
+
+        function updatePerformanceStats() {
+            let bestCoin = '',
+                bestReturn = -Infinity;
+            let worstCoin = '',
+                worstReturn = Infinity;
+            let totalReturn = 0;
+            let returns = [];
+
+            holdings.forEach(holding => {
+                const invested = holding.amount * holding.purchasePrice;
+                const value = holding.amount * holding.currentPrice;
+                const returnPercent = ((value - invested) / invested) * 100;
+                returns.push(returnPercent);
+
+                totalReturn += returnPercent;
+
+                if (returnPercent > bestReturn) {
+                    bestReturn = returnPercent;
+                    bestCoin = holding.coin;
+                }
+                if (returnPercent < worstReturn) {
+                    worstReturn = returnPercent;
+                    worstCoin = holding.coin;
+                }
+            });
+
+            const avgReturn = holdings.length > 0 ? (totalReturn / holdings.length).toFixed(2) : 0;
+            const variance = returns.reduce((sum, r) => sum + Math.pow(r - avgReturn, 2), 0) / returns.length;
+            const volatility = Math.sqrt(variance).toFixed(2);
+
+            document.getElementById('bestPerformer').textContent = bestCoin || '-';
+            document.getElementById('bestPerfReturn').textContent = bestReturn.toFixed(2) + '%';
+            document.getElementById('worstPerformer').textContent = worstCoin || '-';
+            document.getElementById('worstPerfReturn').textContent = worstReturn.toFixed(2) + '%';
+            document.getElementById('avgReturn').textContent = avgReturn + '%';
+            document.getElementById('volatility').textContent = volatility + '%';
+        }
+
+        function addPriceAlert() {
+            const coin = document.getElementById('alertCoin').value;
+            const price = parseFloat(document.getElementById('alertPrice').value);
+            const type = document.getElementById('alertType').value;
+
+            if (coin === 'Select a coin' || !price) {
+                alert('⚠️ Please select coin and enter target price');
+                return;
+            }
+
+            const alert = {
+                id: Date.now(),
+                coin,
+                price,
+                type
+            };
+
+            alerts.push(alert);
+            localStorage.setItem('holdingAlerts', JSON.stringify(alerts));
+            updateAlerts();
+
+            document.getElementById('alertPrice').value = '';
+        }
+
+        function removeAlert(id) {
+            alerts = alerts.filter(a => a.id !== id);
+            localStorage.setItem('holdingAlerts', JSON.stringify(alerts));
+            updateAlerts();
+        }
+
+        function updateAlerts() {
+            const tbody = document.getElementById('alertsBody');
+            tbody.innerHTML = '';
+
+            if (alerts.length === 0) {
+                document.getElementById('alertsTable').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('alertsTable').style.display = 'table';
+
+            alerts.forEach(alert => {
+                const holding = holdings.find(h => h.coin === alert.coin);
+                const currentPrice = holding ? holding.currentPrice : 0;
+                const triggered = alert.type === 'Price Above' ? currentPrice >= alert.price : currentPrice <= alert.price;
+                const status = triggered ? '✅ Triggered' : '⏳ Waiting';
+                const statusColor = triggered ? '#00ffaa' : '#ff9900';
+
+                const row = tbody.insertRow();
+                row.innerHTML = `
+      <td style="padding: 10px; color: #00ffaa; font-weight: bold;">${alert.coin}</td>
+      <td style="padding: 10px; color: #ccc;">${alert.type}</td>
+      <td style="padding: 10px; color: #ccc;">$${alert.price.toFixed(2)}</td>
+      <td style="padding: 10px; color: #ccc;">$${currentPrice.toFixed(2)}</td>
+      <td style="padding: 10px; color: ${statusColor}; font-weight: bold;">${status}</td>
+      <td style="padding: 10px;"><button onclick="removeAlert(${alert.id})" style="padding: 5px 10px; background: rgba(255, 68, 85, 0.2); color: #ff4455; border: 1px solid #ff4455;">🗑️</button></td>
+    `;
+            });
+        }
+
+        function updateAlertCoinList() {
+            const select = document.getElementById('alertCoin');
+            select.innerHTML = '<option>Select a coin</option>';
+            holdings.forEach(h => {
+                const option = document.createElement('option');
+                option.value = h.coin;
+                option.textContent = h.coin;
+                select.appendChild(option);
+            });
+        }
+
+        window.addEventListener('load', () => {
+            updatePortfolio();
+            updateAlerts();
+        });
+    </script>
+
+    <script src="java.sc.js"></script>
+
+</body>
+
+</html>
